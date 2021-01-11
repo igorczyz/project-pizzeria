@@ -60,6 +60,7 @@
 
       thisProduct.renderInMenu();
       thisProduct.initAccordion();
+      thisProduct.getElements();
 
       console.log('new Product:', thisProduct);
     }
@@ -75,6 +76,15 @@
       /* add element to menu */
       menuContainer.appendChild(thisProduct.element);
     }
+    getElements(){
+      const thisProduct = this;
+      
+      thisProduct.accordionTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
+      thisProduct.form = thisProduct.element.querySelector(select.menuProduct.form);
+      thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
+      thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
+      thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
+    }
     initAccordion(){
       const thisProduct = this;
       
@@ -82,11 +92,10 @@
       const clickableTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
       /* START: click event listener to trigger */
       clickableTrigger.addEventListener('click', function(event){
-        console.log('clicked');
         /* prevent default action for event */
         event.preventDefault();
         /* toggle active class on element of thisProduct */
-        $(this).toggle.Class('active');
+        thisProduct.element.classList.toggle('active');
         /* find all active products */
         const activeProducts = document.querySelector(select.all.menuProductsActive);
         /* START LOOP: for each active product */
