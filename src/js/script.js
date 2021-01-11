@@ -97,7 +97,7 @@
         /* toggle active class on element of thisProduct */
         thisProduct.element.classList.toggle('active');
         /* find all active products */
-        const activeProducts = document.querySelector(select.all.menuProductsActive);
+        const activeProducts = document.querySelectorAll(select.all.menuProductsActive);
         /* START LOOP: for each active product */
         for (let activeProduct of activeProducts)
           /* START: if the active product isn't the element of thisProduct */
@@ -109,12 +109,7 @@
       /* END LOOP: for each active product */
     }
     /* END: click event listener to trigger */
-      
-
-       
   }
-
-
 
   const app = {
     initMenu: function(){
