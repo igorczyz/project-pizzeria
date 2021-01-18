@@ -194,6 +194,7 @@
       
       
       thisWidget.getElements(element);
+      thisWidget.valu = settings.amountWidget.defaultValue;
       thisWidget.setValue(thisWidget.input.value);
       thisWidget.initActions();
       console.log('AmountWidget:', thisWidget);
@@ -214,12 +215,14 @@
       const newValue = parseInt(value);
 
       /* TODO: Add validation */
+      if(thisWidget.value !== newValue && !isNaN(newValue) && newValue >= 1 && newValue <=9) {
+        thisWidget.value = newValue;
+      }
 
-      thisWidget.value = newValue;
-      thisWidget.announce();
       thisWidget.input.value = thisWidget.value;
-
+      thisWidget.announce();
     }
+    
     initActions(){
       const thisWidget = this;
 
@@ -272,8 +275,6 @@
       thisApp.initMenu();
     },
   };
-
-  
 
   app.init();
 }
