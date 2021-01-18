@@ -59,11 +59,12 @@
       thisProduct.data = data;
 
       thisProduct.renderInMenu();
+      thisProduct.getElements();
       thisProduct.initAccordion();
       thisProduct.initOrderForm();
       thisProduct.initAmountWidget();
       thisProduct.processOrder();
-      thisProduct.getElements();
+      
 
       console.log('new Product:', thisProduct);
     }
@@ -145,12 +146,12 @@
       for (let paramId in thisProduct.data.params){
         const param = thisProduct.data.params[paramId];
 
-        for(let optionId in param.options);{
+        for(let optionId in param.options){
           const options = param.options[optionId];
           const optionsSelected = formData[paramId] && formData[paramId].includes(optionId);
 
           if(optionsSelected){
-            if(!options.default == true){
+            if(options.default != true){
               price = price + options.price;
             }
           }
@@ -159,21 +160,21 @@
               price = price - options.price;
             }
           }
-          const optionImage = thisProduct.imageWrapper.querySelector('.' + paramId + '-' + optionId);
+          const optionImage = thisProduct.element.querySelector('.' + paramId + '-' + optionId);
           if(optionImage){
             if(optionsSelected){
-              optionImage.ClassList.add(classNames.menuProduct.imageVisible);
+              optionImage.classList.add(classNames.menuProduct.imageVisible);
             }
             else{
-              optionImage.ClassList.remove(classNames.menuProduct.imageVisible);
+              optionImage.classList.remove(classNames.menuProduct.imageVisible);
             }
           }
         }
-      
 
       }
 
       console.log('formData', formData);
+      thisProduct.priceElem.innerHTML = price;
     }
     initAmountWidget(){
       const thisProduct = this;
@@ -190,10 +191,11 @@
   class AmountWidget{
     constructor(element){
       const thisWidget = this;
-
+      
+      
       thisWidget.getElements(element);
       thisWidget.setValue(thisWidget.input.value);
-
+      thisWidget.initActions();
       console.log('AmountWidget:', thisWidget);
       console.log('constructor arguments:', element);
     }
@@ -232,15 +234,15 @@
         event.preventDefault();
         thisWidget.setValue(thisWidget.value + 1);
       });
-
-      announce(){
-        const thisWidget = this;
-
-        const event = new Event('updated');
-        thisWidget.element.dispatchEvent(event);
-      }
-
     }
+    announce(){
+      const thisWidget = this;
+
+      const event = new Event('updated');
+      thisWidget.element.dispatchEvent(event);
+    }
+
+    
   }
 
   const app = {
