@@ -170,10 +170,9 @@
             }
           }
         }
-
       }
-
-      console.log('formData', formData);
+      price *= thisProduct.amountWidget.value;
+      
       thisProduct.priceElem.innerHTML = price;
     }
     initAmountWidget(){
@@ -194,7 +193,7 @@
       
       
       thisWidget.getElements(element);
-      thisWidget.valu = settings.amountWidget.defaultValue;
+      thisWidget.value = settings.amountWidget.defaultValue;
       thisWidget.setValue(thisWidget.input.value);
       thisWidget.initActions();
       console.log('AmountWidget:', thisWidget);
