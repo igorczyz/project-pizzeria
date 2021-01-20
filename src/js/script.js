@@ -53,7 +53,7 @@
     },
     // CODE ADDED END
   };
-  
+
   const classNames = {
     menuProduct: {
       wrapperActive: 'active',
@@ -65,7 +65,7 @@
     },
     // CODE ADDED END
   };
-  
+
   const settings = {
     amountWidget: {
       defaultValue: 1,
@@ -78,7 +78,7 @@
     },
     // CODE ADDED END
   };
-  
+
   const templates = {
     menuProduct: Handlebars.compile(document.querySelector(select.templateOf.menuProduct).innerHTML),
     // CODE ADDED START
@@ -86,7 +86,7 @@
     // CODE ADDED END
   };
   class Product {
-    constructor(id, data){
+    constructor(id, data) {
       const thisProduct = this;
 
       thisProduct.id = id;
@@ -98,12 +98,12 @@
       thisProduct.initOrderForm();
       thisProduct.initAmountWidget();
       thisProduct.processOrder();
-      
+
 
       //console.log('new Product:', thisProduct);
     }
-  
-    renderInMenu(){
+
+    renderInMenu() {
       const thisProduct = this;
       /* generate HTML based on template */
       const generatedHTML = templates.menuProduct(thisProduct.data);
@@ -114,9 +114,10 @@
       /* add element to menu */
       menuContainer.appendChild(thisProduct.element);
     }
-    getElements(){
+    getElements() {
       const thisProduct = this;
-      
+
+
       thisProduct.accordionTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
       thisProduct.form = thisProduct.element.querySelector(select.menuProduct.form);
       thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
@@ -124,14 +125,15 @@
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
       thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.element);
       thisProduct.amountWidgetElem = thisProduct.element.querySelector(select.menuProduct.amountWidget);
+
     }
-    initAccordion(){
+    initAccordion() {
       const thisProduct = this;
-      
+
       /* find the clickable trigger (the element that should react to clicking) */
       const clickableTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
       /* START: click event listener to trigger */
-      clickableTrigger.addEventListener('click', function(event){
+      clickableTrigger.addEventListener('click', function (event) {
         /* prevent default action for event */
         event.preventDefault();
         /* toggle active class on element of thisProduct */
@@ -149,184 +151,201 @@
       /* END LOOP: for each active product */
     }
     /* END: click event listener to trigger */
-  
-  
-    initOrderForm(){
+
+
+    initOrderForm() {
       const thisProduct = this;
 
-      thisProduct.form.addEventListener('submit', function(event){
-        
+      thisProduct.form.addEventListener('submit', function (event) {
+
         event.preventDefault();
         thisProduct.processOrder();
       });
-      
-      for(let input of thisProduct.formInputs){
-        input.addEventListener('change', function(){
+
+      for (let input of thisProduct.formInputs) {
+        input.addEventListener('change', function () {
           thisProduct.processOrder();
         });
       }
-      
-      thisProduct.cartButton.addEventListener('click', function(event){
+
+      thisProduct.cartButton.addEventListener('click', function (event) {
         event.preventDefault();
         thisProduct.processOrder();
+        thisProduct.addToCart();
       });
 
     }
-    processOrder(){
+    processOrder() {
       const thisProduct = this;
       const formData = utils.serializeFormToObject(thisProduct.form);
-      
+
       let price = thisProduct.data.price;
-      for (let paramId in thisProduct.data.params){
+      for (let paramId in thisProduct.data.params) {
         const param = thisProduct.data.params[paramId];
 
-        for(let optionId in param.options){
+        for (let optionId in param.options) {
           const options = param.options[optionId];
           const optionsSelected = formData[paramId] && formData[paramId].includes(optionId);
 
-          if(optionsSelected){
-            if(options.default != true){
+          if (optionsSelected) {
+            if (options.default != true) {
               price = price + options.price;
             }
-          }
-          else{
-            if(options.default == true){
+          } else {
+            if (options.default == true) {
               price = price - options.price;
             }
           }
           const optionImage = thisProduct.element.querySelector('.' + paramId + '-' + optionId);
-          if(optionImage){
-            if(optionsSelected){
+          if (optionImage) {
+            if (optionsSelected) {
               optionImage.classList.add(classNames.menuProduct.imageVisible);
-            }
-            else{
+            } else {
               optionImage.classList.remove(classNames.menuProduct.imageVisible);
             }
           }
         }
       }
       price *= thisProduct.amountWidget.value;
-      
+
       thisProduct.priceElem.innerHTML = price;
     }
-    initAmountWidget(){
+    initAmountWidget() {
       const thisProduct = this;
 
-      thisProduct.amountWidgetElem.addEventListener('update', function(){
+      thisProduct.amountWidget = new AmountWidget(thisProduct.amountWidgetElem);
+
+      thisProduct.amountWidgetElem.addEventListener('update', function () {
         thisProduct.processOrder();
       });
 
-      thisProduct.amountWidget = new AmountWidget(thisProduct.amountWidgetElem);
+
     }
+    addToCart() {
+      const thisProduct = this;
+
+      app.cart.add(thisProduct);
+    }
+
   }
 
-  class AmountWidget{
-    constructor(element){
+  class AmountWidget {
+    constructor(element) {
       const thisWidget = this;
-      
+
       thisWidget.getElements(element);
       thisWidget.value = settings.amountWidget.defaultValue;
       thisWidget.setValue(thisWidget.input.value);
       thisWidget.initActions();
-      console.log('AmountWidget:', thisWidget);
-      console.log('constructor arguments:', element);
+      //console.log('AmountWidget:', thisWidget);
+      //console.log('constructor arguments:', element);
     }
-    getElements(element){
+    getElements(element) {
       const thisWidget = this;
 
       thisWidget.element = element;
       thisWidget.input = thisWidget.element.querySelector(select.widgets.amount.input);
       thisWidget.linkDecrease = thisWidget.element.querySelector(select.widgets.amount.linkDecrease);
       thisWidget.linkIncrease = thisWidget.element.querySelector(select.widgets.amount.linkIncrease);
-      
-      
+
+
+
     }
-    setValue(value){
+    setValue(value) {
       const thisWidget = this;
-      
+
       const newValue = parseInt(value);
 
       /* TODO: Add validation */
-      if(thisWidget.value !== newValue && !isNaN(newValue) && newValue >= 1 && newValue <=9) {
+      if (thisWidget.value !== newValue && !isNaN(newValue) && newValue >= 1 && newValue <= 9) {
         thisWidget.value = newValue;
       }
 
       thisWidget.input.value = thisWidget.value;
       thisWidget.announce();
     }
-    
-    initActions(){
+
+    initActions() {
       const thisWidget = this;
 
-      thisWidget.input.addEventListener('change', function(){
+      thisWidget.input.addEventListener('change', function () {
         thisWidget.setValue(thisWidget.input.value);
       });
-      thisWidget.linkDecrease.addEventListener('click', function(event){
+      thisWidget.linkDecrease.addEventListener('click', function (event) {
         event.preventDefault();
         thisWidget.setValue(thisWidget.value - 1);
       });
-      thisWidget.linkIncrease.addEventListener('click', function(event){
+      thisWidget.linkIncrease.addEventListener('click', function (event) {
         event.preventDefault();
         thisWidget.setValue(thisWidget.value + 1);
       });
     }
-    announce(){
+    announce() {
       const thisWidget = this;
 
       const event = new Event('update');
       thisWidget.element.dispatchEvent(event);
     }
   }
-  class Cart{
-    constructor(element){
+  class Cart {
+    constructor(element) {
       const thisCart = this;
 
       thisCart.products = [];
 
       thisCart.getElements(element);
+      thisCart.initActions();
 
-      console.log('new Cart'. thisProduct);
+
+      console.log('new Cart'.thisProduct);
     }
 
-    getElements(element){
+    getElements(element) {
       const thisCart = this;
 
       thisCart.dom = {};
-      thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(select.cart.toogleTrigge);
       thisCart.dom.wrapper = element;
+
+      thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(select.cart.toggleTrigger);
+
     }
-    initActions(){
+    initActions() {
       const thisCart = this;
 
-      thisCart.dom.toggleTrigger.addEventListener('click', function(event){
+      thisCart.dom.toggleTrigger.addEventListener('click', function (event) {
         event.preventDefault();
         thisCart.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
       });
     }
+    add(menuProduct) {
+      // const thisCart = this;
+
+      console.log('adding product', menuProduct);
+    }
   }
 
   const app = {
-    initMenu: function(){
+    initMenu: function () {
       const thisApp = this;
 
       //console.log('thisApp.data:', thisApp.data);
 
-      for(let productData in thisApp.data.products){
+      for (let productData in thisApp.data.products) {
         new Product(productData, thisApp.data.products[productData]);
       }
     },
-    initData: function(){
+    initData: function () {
       const thisApp = this;
-  
+
       thisApp.data = dataSource;
     },
-    initCart: function(){
+    initCart: function () {
       const thisApp = this;
 
       const cartElem = document.querySelector(select.containerOf.cart);
       thisApp.cart = new Cart(cartElem);
     },
-    init: function(){
+    init: function () {
       const thisApp = this;
       //console.log('*** App starting ***');
       //console.log('thisApp:', thisApp);
@@ -338,9 +357,10 @@
 
       thisApp.initMenu();
       thisApp.initCart();
-    },
+    }
+
   };
-  
+
 
   app.init();
 }
