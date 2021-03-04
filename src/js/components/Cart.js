@@ -1,6 +1,8 @@
-import {select, classNames, templates, settings} from './settings.js';
-import utils from './utils.js';
+import {select, classNames, templates, settings} from '../settings.js';
+import {utils} from '../utils.js';
 import CartProduct from './CartProduct.js';
+
+
 
 class Cart {
   constructor(element) {
@@ -28,7 +30,8 @@ class Cart {
     thisCart.dom.totalNumber = thisCart.dom.wrapper.querySelector(select.cart.totalNumber);
     thisCart.dom.form = thisCart.dom.wrapper.querySelector(select.cart.form);
 
-    thisCart.renderTotalsKeys = ['totalNumber', 'totalPrice', 'subtotalPrice', 'deliveryFee', 'formAdress', 'formPhone'];
+
+    thisCart.renderTotalsKeys = ['totalNumber', 'totalPrice', 'subtotalPrice', 'deliveryFee',];
 
     for(let key of thisCart.renderTotalsKeys){
       thisCart.dom[key] = thisCart.dom.wrapper.querySelectorAll(select.cart[key]);
@@ -98,8 +101,6 @@ class Cart {
     const thisCart = this;
     const url = settings.db.url + '/' + settings.db.order;
     const payload = {
-      address: thisCart.dom.formAdress.value,
-      phone: thisCart.dom.formPhone.value,
       totalPrice: thisCart.totalPrice,
       subtotalPrice: thisCart.subtotalPrice,
       totalNumber: thisCart.totalNumber,
