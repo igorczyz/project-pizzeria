@@ -117,19 +117,19 @@ class Product {
         }
           
         const optionImage = thisProduct.element.querySelector('.' + paramId + '-' + optionId);
-        
-        if (optionsSelected) {
-          if(!thisProduct.params[paramId]){
-            thisProduct.params[paramId] = {
-              label: param.label,
-              options: {},
-            };
+        if (optionImage)
+          if (optionsSelected) {
+            if(!thisProduct.params[paramId]){
+              thisProduct.params[paramId] = {
+                label: param.label,
+                options: {},
+              };
+            }
+            thisProduct.params[paramId].options[optionId] = options.label;
+            optionImage.classList.add(classNames.menuProduct.imageVisible);
+          } else {
+            optionImage.classList.remove(classNames.menuProduct.imageVisible);
           }
-          thisProduct.params[paramId].options[optionId] = options.label;
-          optionImage.classList.add(classNames.menuProduct.imageVisible);
-        } else {
-          optionImage.classList.remove(classNames.menuProduct.imageVisible);
-        }
         
       }
     }
