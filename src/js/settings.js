@@ -3,11 +3,16 @@
 export const select = {
   templateOf: {
     menuProduct: '#template-menu-product',
-    cartProduct: '#template-cart-product', // CODE ADDED
+    cartProduct: '#template-cart-product',
+    bookingWidget: '#template-booking-widget',
+
   },
   containerOf: {
     menu: '#product-list',
     cart: '#cart',
+    pages: '#pages',
+    booking: '.booking-wrapper',
+
   },
   all: {
     menuProducts: '#product-list > .product',
@@ -28,6 +33,16 @@ export const select = {
       linkDecrease: 'a[href="#less"]',
       linkIncrease: 'a[href="#more"]',
     },
+    datePicker: {
+      wrapper: '.date-picker',
+      input: `input[name="date"]`,
+    },
+    hourPicker: {
+      wrapper: '.hour-picker',
+      input: 'input[type="range"]',
+      output: '.output',
+    },
+
   },
   // CODE ADDED START
   cart: {
@@ -48,7 +63,14 @@ export const select = {
     edit: '[href="#edit"]',
     remove: '[href="#remove"]',
   },
-  // CODE ADDED END
+  booking: {
+    peopleAmount: '.people-amount',
+    hoursAmount: '.hours-amount',
+    tables: '.floor-plan .table',
+  },
+  nav: {
+    links: '.main-nav a',
+  },
 };
   
 
@@ -61,24 +83,49 @@ export const classNames = {
   cart: {
     wrapperActive: 'active',
   },
-  // CODE ADDED END
+  booking: {
+    loading: 'loading',
+    tableBooked: 'booked',
+  },
+  nav: {
+    active: 'active',
+  },
+  pages: {
+    active: 'active',
+  },
+
 };
 
 export const settings = {
+  hours: {
+    open: 12,
+    close: 24,
+  },
   amountWidget: {
     defaultValue: 1,
     defaultMin: 1,
     defaultMax: 9,
-  }, // CODE CHANGED
-  // CODE ADDED START
+  }, 
+  datePicker: {
+    maxDaysInFuture: 14,
+  },
   cart: {
     defaultDeliveryFee: 20,
   },
-  // CODE ADDED END
+  booking: {
+    tableIdAttribute: 'data-table',
+  },
   db: {
     url: '//localhost:3131',
     product: 'product',
     order: 'order',
+    booking: 'booking',
+    event: 'event',
+    dateStartParamKey: 'date_gte',
+    dateEndParamKey: 'date_lte',
+    notRepeatParam: 'repeat=false',
+    repeatParam: 'repeat_ne=false',
+
   },
 };
 
@@ -87,4 +134,7 @@ export const templates = {
   menuProduct: Handlebars.compile(document.querySelector(select.templateOf.menuProduct).innerHTML),
   // eslint-disable-next-line no-undef
   cartProduct: Handlebars.compile(document.querySelector(select.templateOf.cartProduct).innerHTML),
+  //eslint-disable-next-line no-undef
+  bookingWidget: Handlebars.compile(document.querySelector(select.templateOf.bookingWidget).innerHTML),
+
 };
