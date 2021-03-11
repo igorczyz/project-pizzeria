@@ -34,7 +34,7 @@
     @extend .h1;
     font-weight: $font-light;
   }
-
+  
   &__description {
     color: lighten($color-dark, 10%);
   }

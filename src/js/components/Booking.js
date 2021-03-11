@@ -42,8 +42,8 @@ class Booking {
 
     });
 
-    thisBooking.hourPicker = new hourPicker(thisBooking.dom.hourPicker);
-    thisBooking.dom.hourPicker.addEventListener('click', function(){
+    thisBooking.hourPicker = new AmountWidget(thisBooking.dom.HourPicker);
+    thisBooking.dom.HourPicker.addEventListener('click', function(){
 
     });
 
