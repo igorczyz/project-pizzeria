@@ -8,10 +8,6 @@
         "ecmaVersion": 2015,
         "sourceType": "module"
     },
-    "globals": {
-        "flatpickr": false,
-        "rangeSlider": false
-      },
     "rules": {
         "indent": [
             "error",
@@ -32,5 +28,11 @@
         "no-console": [
             "off"
         ]
-    }
+    },
+    "globals": {
+        "flatpickr": false,
+        "rangeSlider": false
+      }
+
+    
 }
