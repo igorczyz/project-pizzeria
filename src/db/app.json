@@ -255,6 +255,11 @@
         "starters": ["lemonWater"]
       }
     ],
-    "booking": []
+    "booking": [
+      {
+        "id": 1,
+        "date": "2019-01-03"
+      }
+    ]
   
   }
