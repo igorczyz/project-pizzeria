@@ -258,7 +258,12 @@
     "booking": [
       {
         "id": 1,
-        "date": "2019-01-03"
+        "date": "2019-01-03",
+        "hour": "18:00",
+        "tabel": 1,
+        "duration": 4,
+        "ppl": 4,
+        "starters": ["water"]
       }
     ]
   
