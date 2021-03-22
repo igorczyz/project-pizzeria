@@ -94,6 +94,7 @@ class Booking {
 
     thisBooking.updateDOM();
   }
+  
   makeBooked(date, hour, duration, table){
     const thisBooking = this;
 
@@ -147,6 +148,53 @@ class Booking {
     }
   }
 
+  initTables(event){
+    const thisBooking = this;
+
+    const clickedElement = event.target;
+
+    if(!clickedElement.classList.contains(classNames.booking.tableBooked) && clickedElement.classList.contains('table')){
+      const idTable = clickedElement.getAttribute('data-table');
+
+      for(let table of thisBooking.dom.tables){
+        table.classList.remove(classNames.booking.tableSelected);
+      }
+      if(thisBooking.reservationTable == idTable){
+        thisBooking.reservationTable = null;
+      }
+      else{
+        thisBooking.reservationTable = idTable;
+        clickedElement.classList.add(classNames.booking.tableSelected);
+      }
+    }
+  }
+
+  sendBooking(){
+    const thisBooking = this;
+    const url = settings.db.url + '/' + settings.db.booking;
+    const reservation = {
+      date: thisBooking.datePicker.value,
+      hour: thisBooking.hourPicker.value,
+      table: parseInt(thisBooking.tableSelected),
+      duration: thisBooking.hoursAmountWidget.value,
+      ppl: thisBooking.peopleAmountWidget.value,
+      starters: [],
+    };
+    for(let starter of thisBooking.starters){
+      reservation.starters.push(starter);
+    }
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(reservation),
+    };
+    fetch(url, options)
+      .then(thisBooking.makeBooked(reservation.date, reservation.hour, reservation.duration, parseInt(reservation.table)));
+  }
+
 
   render(element){
     const thisBooking = this;
@@ -188,6 +236,14 @@ class Booking {
 
     thisBooking.dom.wrapper.addEventListener('updated', function(){
       thisBooking.updateDOM();
+    });
+    thisBooking.dom.form.addEventListener('submit', function(event){
+      event.preventDefault();
+      thisBooking.sendBooking();
+    });
+
+    thisBooking.dom.parentTables.addEventListener('click', function(event){
+      thisBooking.initTables(event);
     });
   }  
 }
