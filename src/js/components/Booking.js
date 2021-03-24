@@ -12,6 +12,7 @@ class Booking {
     thisBooking.render(element);
     thisBooking.initWidgets();
     thisBooking.getData();
+    thisBooking.initTables();
   }
   getData(){
     const thisBooking = this;
@@ -237,13 +238,12 @@ class Booking {
     thisBooking.dom.wrapper.addEventListener('updated', function(){
       thisBooking.updateDOM();
     });
+    thisBooking.dom.parentTables.addEventListener('click', function(event){
+      thisBooking.initTables(event);
+    });
     thisBooking.dom.form.addEventListener('submit', function(event){
       event.preventDefault();
       thisBooking.sendBooking();
-    });
-
-    thisBooking.dom.parentTables.addEventListener('click', function(event){
-      thisBooking.initTables(event);
     });
   }  
 }
