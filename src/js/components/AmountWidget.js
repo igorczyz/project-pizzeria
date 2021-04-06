@@ -9,7 +9,9 @@ class AmountWidget extends BaseWidget {
     thisWidget.getElements(element);
 
     thisWidget.initActions();
-   
+
+    thisWidget.value = parseInt(thisWidget.dom.input.value);
+
     //console.log('AmountWidget:', thisWidget);
   }
   getElements() {

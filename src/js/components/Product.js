@@ -110,6 +110,13 @@ class Product {
           if (options.default != true) {
             price = price + options.price;
           }
+          if(!thisProduct.params[paramId]){
+            thisProduct.params[paramId] = {
+              label: param.label,
+              options: {},
+            };
+          }
+          thisProduct.params[paramId].options[optionId] = options.label;
         } else {
           if (options.default == true) {
             price = price - options.price;
@@ -119,13 +126,6 @@ class Product {
         const optionImage = thisProduct.element.querySelector('.' + paramId + '-' + optionId);
         if (optionImage)
           if (optionsSelected) {
-            if(!thisProduct.params[paramId]){
-              thisProduct.params[paramId] = {
-                label: param.label,
-                options: {},
-              };
-            }
-            thisProduct.params[paramId].options[optionId] = options.label;
             optionImage.classList.add(classNames.menuProduct.imageVisible);
           } else {
             optionImage.classList.remove(classNames.menuProduct.imageVisible);
