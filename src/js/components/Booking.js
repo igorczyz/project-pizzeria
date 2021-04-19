@@ -123,6 +123,8 @@ class Booking {
     let allAvailable = false;
 
     if(
+      typeof thisBooking.booked === 'undefined'
+      ||
       typeof thisBooking.booked[thisBooking.date] == 'undefined'
       ||
       typeof thisBooking.booked[thisBooking.date][thisBooking.hour] == 'undefined'
@@ -138,6 +140,8 @@ class Booking {
 
       if(
         !allAvailable
+        ||
+        typeof thisBooking.booked[thisBooking.date][thisBooking.hour] === 'undefined'
         ||
         thisBooking.booked[thisBooking.date][thisBooking.hour].includes(tableId)
       ){
@@ -208,7 +212,7 @@ class Booking {
     thisBooking.dom.hoursAmount = document.querySelector(select.booking.hoursAmount);
     thisBooking.dom.datePicker = thisBooking.dom.wrapper.querySelector(select.widgets.datePicker.wrapper);
     thisBooking.dom.hourPicker = thisBooking.dom.wrapper.querySelector(select.widgets.hourPicker.wrapper);
-    thisBooking.dom.tables = thisBooking.dom.wrapper.querySelector(select.booking.tables);
+    thisBooking.dom.tables = thisBooking.dom.wrapper.querySelectorAll(select.booking.tables);
     thisBooking.dom.form = thisBooking.dom.wrapper.querySelector('.booking-form');
 
   }
